@@ -1,180 +1,99 @@
-import React, { useEffect, useState } from "react";
-import { io } from "socket.io-client";
+import React from "react";
 
 function HomePage() {
-  const [selectedRoom, setSelectedRoom] = useState("room_1"); // Default value
-  const [textAreas, setTextAreas] = useState({
-    textArea1: "",
-    textArea2: "",
-  });
-  const [textAreaValues, setTextAreaValues] = useState({ textAreaValue1: '', textAreaValue2: '' });
-
-  const handleTextAreaChange = (event) => {
-    const { id, value } = event.target;
-    setTextAreas((prevState) => ({
-      ...prevState,
-      [id]: value,
-    }));
-  };
-
-
-  const handleClick = () => {
-    console.log(textAreas.textArea1);
-    console.log(textAreas.textArea2);
-  };
-
-  const handleRoomChange = (event) => {
-    setSelectedRoom(event.target.value);
-  };
-
-  const roomClick = () => {
-    console.log(`Joined room: ${selectedRoom}`);
-  };
-
-  useEffect(() => {
-    const socket1 = io("http://localhost:3000");
-    const socket2 = io("http://localhost:3000");
-   
-    const handleConnect = (socket, idKey) => {
-       socket.on("connect", () => {
-         setTextAreaValues(prevValues => ({
-           ...prevValues,
-           [idKey]: `Connected with ID: ${socket.id}`,
-         }));
-       });
-    };
-   
-    handleConnect(socket1, "textAreaValue1");
-    handleConnect(socket2, "textAreaValue2");
-   
-    return () => {
-       socket1.disconnect();
-       socket2.disconnect();
-    };
-   }, []);
-   
-
   return (
-    <div className="bg-black text-white h-screen px-6">
-      <h1 className="text-center py-4 text-3xl uppercase ">
-        welcome to night of the ghost writers
-      </h1>
-      <h1 className="text-center underline text-xl">chats</h1>
-      <div className="border-2 border-white rounded-sm flex justify-between">
-        <div className="px-4">
-          <h1 className="uppercase">YRN:</h1>
-
-          <div className="flex flex-col  gap-4 py-8">
-            <label className="uppercase">
-              Received message
-            </label>
-            <textarea
-              className="h-20 rounded-lg bg-slate-50 border-none text-black text-left px-2 py-4"
-              rows={4}
-              cols={50}
-              style={{ resize: "none" }}
-              id="Receive_1"
-              value={textAreaValues.textAreaValue1}
-              readOnly 
-            ></textarea>
-            <label className="uppercase">
-              Enter your message:
-            </label>
-            <textarea
-              className="h-28 rounded-lg bg-slate-50 border-none text-black text-left px-2 pt-0"
-              rows={4}
-              cols={50}
-              style={{ resize: "none" }}
-              id="textArea1"
-              value={textAreas.textArea1}
-              onChange={handleTextAreaChange}
-            ></textarea>
-            <button
-              onClick={handleClick}
-              className="bg-blue-700 rounded-lg p-2 text-bold hover:bg-cyan-800 my-6"
-            >
-              Send message
-            </button>
-          </div>
-          <div className="flex gap-4 justify-center items-center">
-            <div className=" flex justify-center items-center gap-2">
-              <button
-                onClick={roomClick}
-                className="bg-blue-700 rounded-lg p-2 text-bold hover:bg-cyan-800 my-6"
-              >
-                Join The Room
-              </button>
-              <select
-                id="room_1"
-                value={selectedRoom}
-                onChange={handleRoomChange}
-                className="rounded-lg text-black"
-              >
-                <option value="room_1">Room 1</option>
-                <option value="room_2">Room 2</option>
-                {/* Add more options as needed */}
-              </select>
+    <div className="flex justify-between">
+      <div className="text-white bg-indigo-950  px-4 py-10 border-2 border-teal-500">
+        <span className="bg-black py-3 px-4 rounded-full">IN</span>
+      </div>
+      <div className="w-7/12 flex flex-col border-2">
+        <div className="bg-teal-100 py-10 px-4 flex justify-center items-center">
+          <input
+            className="border-2 border-black py-1 rounded-xl pl-2"
+            placeholder="search.."
+            type="text"
+          />
+        </div>
+        <div className="bg-cyan-600 flex flex-col gap-4 items-center justify-center">
+          <div className="flex gap-4 items-center  text-white border-b-[2px] border-black hover:bg-white hover:text-black">
+            <span className="bg-black py-3 m-4 px-4 rounded-full">IN</span>
+            <div className="flex flex-col gap-1">
+              <h1 className="font-bold">Ntwali Igor</h1>
+              <p className="font-light">hello thi was you first message</p>
             </div>
+            <span>1:55 AM</span>
+          </div>
+          <div className="flex gap-4 items-center  text-white border-b-[2px] border-black hover:bg-white hover:text-black">
+            <span className="bg-black py-3 m-4 px-4 rounded-full">KN</span>
+            <div className="flex flex-col gap-1">
+              <h1 className="font-bold">kevin</h1>
+              <p className="font-light">hello thi was you first message</p>
+            </div>
+            <span>1:55 AM</span>
+          </div>
+          <div className="flex gap-4 items-center  text-white border-b-[2px] border-black hover:bg-white hover:text-black">
+            <span className="bg-black py-3 m-4 px-4 rounded-full">EN</span>
+            <div className="flex flex-col gap-1">
+              <h1 className="font-bold">Eligrand</h1>
+              <p className="font-light">hello thi was you first message</p>
+            </div>
+            <span>1:55 AM</span>
+          </div>
+          <div className="flex gap-4 items-center  text-white border-b-[2px] border-black hover:bg-white hover:text-black">
+            <span className="bg-black py-3 m-4 px-4 rounded-full">YN</span>
+            <div className="flex flex-col gap-1">
+              <h1 className="font-bold">Yves</h1>
+              <p className="font-light">hello thi was you first message</p>
+            </div>
+            <span>1:55 AM</span>
+          </div>
+          <div className="flex gap-4 items-center  text-white border-b-[2px] border-black hover:bg-white hover:text-black">
+            <span className="bg-black py-3 m-4 px-4 rounded-full">AI</span>
+            <div className="flex flex-col gap-1">
+              <h1 className="font-bold">Artiste</h1>
+              <p className="font-light">hello thi was you first message</p>
+            </div>
+            <span>1:55 AM</span>
+          </div>
+          <div className="flex gap-4 items-center  text-white border-b-[2px] border-black hover:bg-white hover:text-black">
+            <span className="bg-black py-3 m-4 px-4 rounded-full">LK</span>
+            <div className="flex flex-col gap-1">
+              <h1 className="font-bold">Lion</h1>
+              <p className="font-light">hello thi was you first message</p>
+            </div>
+            <span>1:55 AM</span>
+          </div>
+          <div className="flex gap-4 items-center  text-white border-b-[2px] border-black hover:bg-white hover:text-black">
+            <span className="bg-black py-3 m-4 px-4 rounded-full">YR</span>
+            <div className="flex flex-col gap-1">
+              <h1 className="font-bold">Yrn</h1>
+              <p className="font-light">hello thi was you first message</p>
+            </div>
+            <span>1:55 AM</span>
           </div>
         </div>
+      </div>
+      <div className="w-8/12 bg-white text-black gap-2 flex flex-col">
+        <div className=" flex flex-col gap-2">
+          <h1 className="font-bold text-2xl">Igor Ntwali</h1>
+          <span>Active Now</span>
+          <hr className="h-[1px] bg-black w-[45rem]" />
+        </div>
 
-        {/* this is the end of this chat room and the beginning of the second room  */}
-
-        <div className="px-4">
-          <h1 className="uppercase">YRN:</h1>
-
-          <div className="flex flex-col  gap-4 py-8">
-            <label id="received_2" className="uppercase">
-              Received message
-            </label>
-            <textarea
-              className="h-20 rounded-lg bg-slate-50 border-none text-black text-left px-2 py-4"
-              rows={4}
-              cols={50}
-              style={{ resize: "none" }}
-              id="Receive_2"
-              value={textAreaValues.textAreaValue2}
-              readOnly
-            ></textarea>
-            <label className="uppercase">
-              Enter your message:
-            </label>
-            <textarea
-              className="h-28 rounded-lg bg-slate-50 border-none text-black text-left px-2 pt-0"
-              rows={4}
-              cols={50}
-              style={{ resize: "none" }}
-              id="textArea2"
-              value={textAreas.textArea2}
-              onChange={handleTextAreaChange}
-            ></textarea>
-            <button
-              onClick={handleClick}
-              className="bg-blue-700 rounded-lg p-2 text-bold hover:bg-cyan-800 my-6"
-            >
-              Send message
-            </button>
-          </div>
-          <div className="flex gap-4 justify-center items-center">
-            <div className=" flex justify-center items-center gap-2">
-              <select
-                id="room_2"
-                value={selectedRoom}
-                onChange={handleRoomChange}
-                className="rounded-lg text-black"
-              >
-                <option value="room_1">Room 1</option>
-                <option value="room_2">Room 2</option>
-                {/* Add more options as needed */}
-              </select>
-              <button
-                onClick={roomClick}
-                className="bg-blue-700 rounded-lg p-2 text-bold hover:bg-cyan-800 my-6"
-              >
-                Join The Room
-              </button>
-            </div>
-          </div>
+        <div className="bg-slate-100 flex flex-col items-center h-[30rem]">
+          <p className="py-2">Today</p>
+        </div>
+        <div className="bg-slate-800 flex justify-between items-center p-4 h-14">
+          <textarea
+            className="h-10 w-[30rem] resize-none text-black"
+            name=""
+            id=""
+            cols={1}
+            rows={1}
+          ></textarea>
+          <span className="bg-black py-3 m-4 px-4 rounded-full text-white">
+            SEND
+          </span>
         </div>
       </div>
     </div>
