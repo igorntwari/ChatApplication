@@ -1,11 +1,11 @@
-import mongoose from "mongoose";
+const mongoose =  require('mongoose')
 
 const userSchema = new mongoose.Schema(
   {
-    fullName: {
-      type: String,
-      required: true,
-    },
+    // fullName: {
+    //   type: String,
+    //   required: true,
+    // },
     userName: {
       type: String,
       required: true,
@@ -15,19 +15,19 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    gender: {
-      type: String,
-      required: true,
-      enum: ["male", "female"],
-    },
-    profilePic: {
-      type: String,
-      default: "",
-    },
+    // gender: {
+    //   type: String,
+    //   required: true,
+    //   enum: ["male", "female"],
+    // },
+    // profilePic: {
+    //   type: String,
+    //   default: "",
+    // },
   },
   { timestamps: true }
 );
 
 const User = mongoose.model("User", userSchema);
 
-export default User;
+module.exports = User
