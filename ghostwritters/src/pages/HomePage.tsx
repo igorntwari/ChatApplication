@@ -18,8 +18,6 @@ function HomePage() {
   const { socket } = useContext(SocketContext);
   const currentUser = JSON.parse(localStorage.getItem("currentUser") || "[]");
   const [users, setUsers] = useState([]);
-
-  console.log(users,"=====================")
   useEffect(() => {
     getAllUsers()
       .then((data) => {

@@ -12,7 +12,6 @@ function Conversation({ id, name, time }: Props) {
   const { selectedConversation, setSelectedConversation } = useConvContext();
 
   const isSelected = selectedConversation === id;
-  console.log(name, "======================================");
   return (
     <div
       onClick={() => setSelectedConversation(id)}

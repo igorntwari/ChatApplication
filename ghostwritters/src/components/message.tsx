@@ -11,10 +11,10 @@ interface message {
   time: string;
 }
 function MessageComponent({ message, sender, time, senderId }): message {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser")||'');
- const issender =  senderId === currentUser?._id
+  const currentUser = JSON.parse(localStorage.getItem("currentUser") || "");
+  const issender = senderId === currentUser?._id;
   return (
-    <div className={`chat ${issender?'chat-end':'chat-start'}`}>
+    <div className={`chat ${issender ? "chat-end" : "chat-start"}`}>
       <div className="chat-header">
         {sender}
         <time className="text-xs opacity-50">{dayjs(time).fromNow()}</time>

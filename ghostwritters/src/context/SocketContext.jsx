@@ -4,9 +4,7 @@ const { io } = require("socket.io-client");
 
 export const SocketContext = createContext();
 
-console.log('=================================')
 const currentUser = JSON.parse(localStorage.getItem('currentUser')||'[]')
-console.log(currentUser)
 
 export const SocketContextProvider = ({ children }) => {
   const [socket, setSocket] = useState(null);
