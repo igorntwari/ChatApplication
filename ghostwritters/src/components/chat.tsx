@@ -12,9 +12,8 @@ export default function Chat() {
   const { selectedConversation, setSelectedConversation } = useConvContext();
   const { socket } = useContext(SocketContext);
 
-
   const currentUserId = JSON.parse(
-    localStorage.getItem("currentUser") || ""
+    localStorage.getItem("currentUser") || '[]'
   )._id;
 
   useEffect(() => {
@@ -76,7 +75,7 @@ export default function Chat() {
         <hr className="h-[1px] bg-black w-[45rem]" />
       </div>
 
-      <div className="bg-green-600 overflow-scroll flex flex-col h-[30rem]">
+      <div className="bg-black overflow-scroll flex flex-col h-[30rem]">
         {messages}
       </div>
       <div className="bg-slate-800 flex justify-between items-center p-4 h-14">
@@ -98,6 +97,9 @@ export default function Chat() {
       </div>
     </div>
   ) : (
-    <div>no convo selected</div>
+    <div>
+      <h1>no selected conversation</h1>
+      <h1>Tap to any conversation to start char</h1>
+    </div>
   );
 }

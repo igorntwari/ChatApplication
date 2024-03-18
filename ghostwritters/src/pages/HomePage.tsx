@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { redirect } from "react-router-dom";
+import { redirect, useLoaderData } from "react-router-dom";
 import Conversation from "../components/Conversation.tsx";
 import { getAllUsers } from "../hooks/getAllUsers.ts";
 
@@ -11,14 +11,15 @@ export function loader() {
   if (!currentUser) {
     return redirect("/login");
   }
-  return currentUser;
+  return JSON.parse(currentUser);
 }
 
 function HomePage() {
-  const {socket} = useContext(SocketContext)
-  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '')
+  const { socket } = useContext(SocketContext);
+  const currentUser = JSON.parse(localStorage.getItem("currentUser") || "[]");
   const [users, setUsers] = useState([]);
 
+  console.log(users,"=====================")
   useEffect(() => {
     getAllUsers()
       .then((data) => {
@@ -27,27 +28,37 @@ function HomePage() {
       .catch((err) => console.log(err));
   }, [socket]);
 
+  const usersConversations = users.map((user, ind) => (
+    <Conversation
+    key={ind}
+    id={user._id}
+    name={user.userName}
+    time={user.updatedAt}
+    />
+    ));
 
-  const usersConversations = users.map((user, ind) => <Conversation key={ind} id={user._id} name={user.userName} time={user.updatedAt} />)
 
   return (
-    <div className="flex justify-between">
-      <div className="text-white bg-indigo-950  px-4 py-10 border-2 border-teal-500">
-        <span className="text-red-600">{currentUser?.userName}</span>
+    <div className="flex h-screen">
+      <div className="text-white bg-black  px-4 py-10 w-64">
+        <span className="text-white flex justify-center font-bold text-xl border-2 border-white rounded-full bg-cyan-950">
+          {currentUser?.userName}
+        </span>
       </div>
-      <div className="w-7/12 flex flex-col border-2">
-        <div className="bg-teal-100 py-10 px-4 flex justify-center items-center">
+      <div className="w-[25rem] flex flex-col border border-black">
+        <div className="bg-white py-10 px-4 flex flex-col gap-6 justify-start">
+          <label className="text-2xl text-black font-bold">Chats</label>
           <input
-            className="border-2 border-black py-1 rounded-xl pl-2"
-            placeholder="search.."
+            className="border-2 border-black py-1 rounded-xl pl-2 text-white"
+            placeholder="search..."
             type="text"
           />
         </div>
-        <div className="bg-cyan-600 flex flex-col gap-4 items-center justify-center">
+        <div className="bg-blue-950 flex flex-col justify-start">
           {usersConversations}
         </div>
-      </div>     
-      <Chat/>
+      </div>
+      <Chat />
     </div>
   );
 }

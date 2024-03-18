@@ -25,7 +25,6 @@ export default function Login() {
       localStorage.setItem("currentUser", JSON.stringify(currentUser));
       return navigate("/");
     } catch (error) {
-      alert("stupiddddddddddd");
       console.log("error: ", error.message);
     }
   }

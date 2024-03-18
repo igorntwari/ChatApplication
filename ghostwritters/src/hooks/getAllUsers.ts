@@ -1,7 +1,7 @@
 import { api } from "../api.ts"
 
 export async function getAllUsers(){
-    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '')
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '[]')
 
     try {
         const response = await fetch(`${api}/allusers`)
