@@ -1,21 +1,30 @@
-import { Server } from "socket.io";
-import http from "http";
-import { express } from "express";
+const {Server}  = require("socket.io");
+const http  = require("http");
+const express  = require("express");
 
-const app = require(express);
+const app = express()
 
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: ["http://localhost:3000"],
+  cors: ["*"],
   methods: ["GET", "POST"],
 });
 
+const onlineUsers = {}
+
+function getSocketId(userId){
+  return onlineUsers[userId]
+}
+
 io.on("connection", (socket) => {
-  console.log("user connected", socket.id);
+  const userId =socket.handshake.query.userId
+  onlineUsers[userId] = socket.id
 });
+
+
 
 io.on("disconnected", (socket) => {
   console.log("a user was disconnected", socket.id);
 });
 
-export { app, io, server };
+module.exports = { app, io, server, getSocketId };

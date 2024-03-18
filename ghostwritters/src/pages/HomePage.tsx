@@ -1,36 +1,39 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { redirect } from "react-router-dom";
 import Conversation from "../components/Conversation.tsx";
 import { getAllUsers } from "../hooks/getAllUsers.ts";
 
 import Chat from "../components/chat.tsx";
+import { SocketContext } from "../context/SocketContext.jsx";
 
 export function loader() {
   const currentUser = localStorage.getItem("currentUser");
   if (!currentUser) {
-    return redirect("/");
+    return redirect("/login");
   }
-  return null;
+  return currentUser;
 }
 
 function HomePage() {
+  const {socket} = useContext(SocketContext)
+  const currentUser = JSON.parse(localStorage.getItem('currentUser') || '')
   const [users, setUsers] = useState([]);
+
   useEffect(() => {
     getAllUsers()
       .then((data) => {
         setUsers(data);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [socket]);
 
-  console.log(users)
 
   const usersConversations = users.map((user, ind) => <Conversation key={ind} id={user._id} name={user.userName} time={user.updatedAt} />)
 
   return (
     <div className="flex justify-between">
       <div className="text-white bg-indigo-950  px-4 py-10 border-2 border-teal-500">
-        <span className="bg-black py-3 px-4 rounded-full">IN</span>
+        <span className="text-red-600">{currentUser?.userName}</span>
       </div>
       <div className="w-7/12 flex flex-col border-2">
         <div className="bg-teal-100 py-10 px-4 flex justify-center items-center">

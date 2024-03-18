@@ -1,4 +1,4 @@
-import {app,server} from './socket/socket'
+const { app, server, getSocketId } = require("./socket/socket");
 const express = require("express");
 
 const mongoose = require("mongoose");
@@ -7,18 +7,21 @@ const Messages = require("./models/message.model");
 const connectDB = require("./db/connectDB");
 const Conversation = require("./models/conversation.model");
 const authRouter = require("./auth/authRoutes");
-const cors = require('cors')
+const cors = require("cors");
+const io = require("./socket/socket").io;
 
 require("dotenv").config();
 
-app.use(cors())
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+const user = {};
 
 //Auth
 app.use("/auth", authRouter);
 
-app.get("/allusers",  (req, res) => {
+app.get("/allusers", (req, res) => {
   User.find()
     .then((result) => {
       res.send(result);
@@ -26,7 +29,6 @@ app.get("/allusers",  (req, res) => {
     .catch((error) => {
       res.send(error);
     });
-
 });
 
 app.get("/messages/:sender/:receiver", async (req, res) => {
@@ -36,18 +38,18 @@ app.get("/messages/:sender/:receiver", async (req, res) => {
     participants: {
       $all: [sender, receiver],
     },
-  }).populate('messages');
+  })
+    .populate("messages")
+    .populate("participants");
 
   res.status(200).json(currentConv);
 });
-
 
 app.post("/messages/:id", async (req, res) => {
   try {
     const sender = req.body.sender;
     const receiver = req.params.id;
     const message = req.body.message;
-    console.log(sender, receiver, message);
 
     let conversation = await Conversation.findOne({
       participants: {
@@ -69,10 +71,15 @@ app.post("/messages/:id", async (req, res) => {
 
     if (new_Message) {
       conversation.messages.push(new_Message._id);
-      conversation.save()
+      conversation.save();
+      const recieverSocketId = getSocketId(receiver);
+      if (recieverSocketId) {
+        io.to(recieverSocketId).emit("newMessage", new_Message);
+      }
     }
-    res.status(201).send(new_Message);
+    res.status(201).json(new_Message);
   } catch (error) {
+    console.log("Error", error);
     res.status(501).send(error);
   }
 });
